@@ -2,79 +2,55 @@ package com.example.sakilla.controllers;
 
 import com.example.sakilla.DTOresponse.ActorResponse;
 import com.example.sakilla.DTOresponse.ActorRequest;
-import com.example.sakilla.entities.Actor;
-import com.example.sakilla.repos.ActorRepos;
+import com.example.sakilla.entities.ActorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.Optional;
-
 
 @RestController
 public class ActorController {
 
-    private final ActorRepos actorRepos;
+    private final ActorService actorService;
 
     @Autowired
-    public ActorController(ActorRepos actorRepos) {
-        this.actorRepos = actorRepos;
+    public ActorController(ActorService actorService) {
+        this.actorService = actorService;
     }
 
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    // GET all actors or filter by name
     @GetMapping("/actors")
     public List<ActorResponse> listActors(@RequestParam(required = false) Optional<String> name) {
-        return name
-                .map(actorRepos::findByFullNameContainingIgnoreCase)
-                .orElseGet(actorRepos::findAll)
-                .stream()
-                .map(ActorResponse::from)
-                .toList();
+        return actorService.listActors(name);
     }
 
+    // GET actor by ID
     @GetMapping("/actors/{id}")
     public ActorResponse getActorById(@PathVariable Short id) {
-        return actorRepos.findById(id)
-                .map(ActorResponse::from)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No actor exists with that ID."));
+        return actorService.getActorById(id);
     }
 
-
+    // POST create actor
     @PostMapping("/actors")
     public ActorResponse createActor(@RequestBody ActorRequest data) {
-        final var actor = new Actor();
-        actor.setFirstName(data.getFirstName());
-        actor.setLastName(data.getLastName());
-
-        Actor savedActor = actorRepos.save(actor);
-
-        return ActorResponse.from(savedActor);
+        return actorService.createActor(data.getFirstName(), data.getLastName());
     }
 
+    // PUT update actor
     @PutMapping("/actors/{id}")
     public ActorResponse updateActor(@PathVariable Short id, @RequestBody ActorRequest data) {
-        return actorRepos.findById(id)
-                .map(actor -> {
-                    actor.setFirstName(data.getFirstName());
-                    actor.setLastName(data.getLastName());
-                    Actor updatedActor = actorRepos.save(actor);
-                    return ActorResponse.from(updatedActor);
-                })
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No actor exists with that ID."));
+        return actorService.updateActor(id, data.getFirstName(), data.getLastName());
     }
 
+    // DELETE actor
     @DeleteMapping("/actors/{id}")
     public void deleteActor(@PathVariable Short id) {
-        if (!actorRepos.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No actor exists with that ID.");
-        }
-        actorRepos.deleteById(id);
+        actorService.deleteActor(id);
     }
-
-
 }
+
 
 
 

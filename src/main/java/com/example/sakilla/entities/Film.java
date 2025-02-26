@@ -1,10 +1,20 @@
 package com.example.sakilla.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.*;
+import jakarta.persistence.Id;  // ✅ Correct import
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "film")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Film {
 
     @Id
@@ -15,4 +25,7 @@ public class Film {
     @Column(name ="title")
     private String title;
 
+    @ManyToMany(mappedBy = "films")
+    private List<Actor> actors = new ArrayList<>();
 }
+

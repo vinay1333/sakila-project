@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "actor")
 @Getter
@@ -29,6 +32,14 @@ public class Actor {
     @Formula("concat(first_name, ' ', last_name)")
     private String fullName;
 
+    @ManyToMany
+    @JoinTable(
+            name = "film_actor",
+            joinColumns = @JoinColumn(name = "actor_id"),
+            inverseJoinColumns = @JoinColumn(name = "film_id")
+    )
+    private List<Film> films = new ArrayList<>();
 }
+
 
 
