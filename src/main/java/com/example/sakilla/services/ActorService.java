@@ -1,5 +1,6 @@
-package com.example.sakilla.entities;
+package com.example.sakilla.services;
 
+import com.example.sakilla.entities.Actor;
 import com.example.sakilla.repos.ActorRepos;
 import com.example.sakilla.DTOresponse.ActorResponse;
 import org.springframework.beans.factory.annotation.Autowired;

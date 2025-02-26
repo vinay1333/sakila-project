@@ -2,7 +2,7 @@ package com.example.sakilla.controllers;
 
 import com.example.sakilla.DTOresponse.ActorResponse;
 import com.example.sakilla.DTOresponse.ActorRequest;
-import com.example.sakilla.entities.ActorService;
+import com.example.sakilla.services.ActorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
