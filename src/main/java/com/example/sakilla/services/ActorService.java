@@ -53,6 +53,22 @@ public class ActorService {
         return ActorResponse.from(updatedActor);
     }
 
+    public ActorResponse patchActor(Short id, String firstName, String lastName) {
+        Actor actor = actorRepos.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No actor exists with that ID."));
+
+        // Only update the fields that are not null
+        if (firstName != null) {
+            actor.setFirstName(firstName);
+        }
+        if (lastName != null) {
+            actor.setLastName(lastName);
+        }
+
+        Actor updatedActor = actorRepos.save(actor);
+        return ActorResponse.from(updatedActor);
+    }
+
     public void deleteActor(Short id) {
         if (!actorRepos.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No actor exists with that ID.");
@@ -60,4 +76,5 @@ public class ActorService {
         actorRepos.deleteById(id);
     }
 }
+
 

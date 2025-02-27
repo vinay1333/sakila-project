@@ -43,6 +43,12 @@ public class ActorController {
         return actorService.updateActor(id, data.getFirstName(), data.getLastName());
     }
 
+    // PATCH update actor (partial update)
+    @PatchMapping("/actors/{id}")
+    public ActorResponse patchActor(@PathVariable Short id, @RequestBody ActorRequest data) {
+        return actorService.patchActor(id, data.getFirstName(), data.getLastName());
+    }
+
     // DELETE actor
     @DeleteMapping("/actors/{id}")
     public void deleteActor(@PathVariable Short id) {
