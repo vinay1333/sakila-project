@@ -1,10 +1,7 @@
 package com.example.sakilla.entities;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Formula;
 
 import java.util.ArrayList;
@@ -14,6 +11,7 @@ import java.util.List;
 @Table(name = "actor")
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class Actor {
 
