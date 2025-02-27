@@ -27,11 +27,13 @@ public class Film {
     private String description;      // Field for description
 
     @Column(name = "length")        // Updated from "duration" to "length"
-    private int length;              // Updated field to "length"
+    private int length;
 
-    @Column(name = "rating")        // Added rating field
-    private String rating;           // Field for rating (assuming you store it as a string)
+    @Column(name = "language_id")
+    private int languageId;
 
     @ManyToMany(mappedBy = "films")
     private List<Actor> actors = new ArrayList<>();
+
+
 }

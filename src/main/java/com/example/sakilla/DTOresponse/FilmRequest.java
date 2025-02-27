@@ -1,5 +1,6 @@
 package com.example.sakilla.DTOresponse;
 
+import com.example.sakilla.entities.Rating;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -19,8 +20,4 @@ public class FilmRequest {
 
     @NotNull(groups = ValidationGroup.Create.class)
     private Integer length;
-
-    @NotNull(groups = ValidationGroup.Create.class)
-    @Size(min = 1, max = 5)
-    private String rating;  // Rating is still a string for client input
 }
