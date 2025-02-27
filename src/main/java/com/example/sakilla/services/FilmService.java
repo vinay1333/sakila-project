@@ -3,7 +3,6 @@ package com.example.sakilla.services;
 import com.example.sakilla.DTOresponse.FilmRequest;
 import com.example.sakilla.DTOresponse.PartialFilmResponse;
 import com.example.sakilla.entities.Film;
-import com.example.sakilla.entities.Rating;
 import com.example.sakilla.repos.FilmRepos;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,20 +34,59 @@ public class FilmService {
 
     public PartialFilmResponse getFilmById(Short id) {
         Film film = filmRepos.findById(id)
-                .orElseThrow(() -> new RuntimeException("Film not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Film not found with ID: " + id));
         return PartialFilmResponse.from(film);
     }
 
-    public Film createFilm(FilmRequest filmRequest) {
+    public PartialFilmResponse createFilm(FilmRequest filmRequest) {
         Film film = new Film();
         film.setTitle(filmRequest.getTitle());
         film.setDescription(filmRequest.getDescription());
         film.setLength(filmRequest.getLength());
+        // Assume a default value for languageId or modify based on logic
+        film.setLanguageId(1);
 
-        // Set default language_id to 1 (you can adjust this value as needed)
-        film.setLanguageId(1); // Add this line
-
-        return filmRepos.save(film);
+        Film createdFilm = filmRepos.save(film);
+        return PartialFilmResponse.from(createdFilm);
     }
 
+    public PartialFilmResponse updateFilm(Short id, FilmRequest filmRequest) {
+        Film film = filmRepos.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Film not found with ID: " + id));
+
+        film.setTitle(filmRequest.getTitle());
+        film.setDescription(filmRequest.getDescription());
+        film.setLength(filmRequest.getLength());
+
+        Film updatedFilm = filmRepos.save(film);
+        return PartialFilmResponse.from(updatedFilm);
+    }
+
+    public PartialFilmResponse partiallyUpdateFilm(Short id, FilmRequest filmRequest) {
+        Film film = filmRepos.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Film not found with ID: " + id));
+
+        // Only update fields that are not null
+        if (filmRequest.getTitle() != null) {
+            film.setTitle(filmRequest.getTitle());
+        }
+        if (filmRequest.getDescription() != null) {
+            film.setDescription(filmRequest.getDescription());
+        }
+        if (filmRequest.getLength() != null) {
+            film.setLength(filmRequest.getLength());
+        }
+
+        Film updatedFilm = filmRepos.save(film);
+        return PartialFilmResponse.from(updatedFilm);
+    }
+
+    public void deleteFilm(Short id) {
+        if (!filmRepos.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Film not found with ID: " + id);
+        }
+        filmRepos.deleteById(id);
+    }
 }
+
+
