@@ -76,5 +76,3 @@ public class ActorService {
         actorRepos.deleteById(id);
     }
 }
-
-
