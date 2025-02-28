@@ -152,4 +152,19 @@ public class ActorControllerTest {
         // Assert
         Assertions.assertTrue(true); // Since delete doesn't return anything, no further check is needed.
     }
+
+    @Test
+    public void patchActorThrowsExceptionWhenNoFieldIsProvided() {
+        // Arrange
+        ActorRequest request = new ActorRequest();
+        request.setFirstName(null);
+        request.setLastName(null);
+
+        // Act & Assert
+        IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            controller.patchActor((short) 1, request);
+        });
+
+        org.junit.jupiter.api.Assertions.assertEquals("At least one field (firstName or lastName) must be provided for patching.", exception.getMessage());
+    }
 }

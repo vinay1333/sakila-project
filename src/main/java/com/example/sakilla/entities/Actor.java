@@ -38,6 +38,3 @@ public class Actor {
     )
     private List<Film> films = new ArrayList<>();
 }
-
-
-

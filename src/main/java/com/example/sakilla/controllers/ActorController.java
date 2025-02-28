@@ -43,10 +43,14 @@ public class ActorController {
         return actorService.updateActor(id, data.getFirstName(), data.getLastName());
     }
 
-    // PATCH update actor (partial update)
-    @PatchMapping("/actors/{id}")
-    public ActorResponse patchActor(@PathVariable Short id, @RequestBody ActorRequest data) {
-        return actorService.patchActor(id, data.getFirstName(), data.getLastName());
+    @PatchMapping("/{id}")
+    public ActorResponse patchActor(@PathVariable("id") short id, @RequestBody ActorRequest request) {
+        // Validate that at least one field is provided
+        if (request.getFirstName() == null && request.getLastName() == null) {
+            throw new IllegalArgumentException("At least one field (firstName or lastName) must be provided for patching.");
+        }
+
+        return actorService.patchActor(id, request.getFirstName(), request.getLastName());
     }
 
     // DELETE actor
