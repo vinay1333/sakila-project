@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173") // Allow only requests from this origin
 public class FilmController {
 
     private final FilmService filmService;
@@ -34,6 +35,7 @@ public class FilmController {
     public PartialFilmResponse getFilmById(@PathVariable Short id) {
         return filmService.getFilmById(id);
     }
+
 
     // POST create film
     @PostMapping("/films")
@@ -58,4 +60,6 @@ public class FilmController {
     public void deleteFilm(@PathVariable Short id) {
         filmService.deleteFilm(id);
     }
+
 }
+

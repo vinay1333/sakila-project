@@ -32,8 +32,23 @@ public class Film {
     @Column(name = "language_id")
     private int languageId;
 
+    @Column(name = "release_year")
+    private int releaseYear;
+
+    @Column(name = "rating")
+    private String rating;
+
+    // Convert the rating string (from the database) to the Rating enum
+    public Rating getRatingEnum() {
+        return rating != null ? Rating.valueOf(rating.replace("-", "_")) : null;
+    }
+
+    // Convert the Rating enum back to a string (for saving to the database)
+    public void setRatingEnum(Rating ratingEnum) {
+        this.rating = ratingEnum != null ? ratingEnum.name().replace("_", "-") : null;
+    }
+
     @ManyToMany(mappedBy = "films")
     private List<Actor> actors = new ArrayList<>();
-
 
 }

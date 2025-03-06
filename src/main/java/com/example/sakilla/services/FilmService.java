@@ -4,7 +4,6 @@ import com.example.sakilla.DTOresponse.FilmRequest;
 import com.example.sakilla.DTOresponse.PartialFilmResponse;
 import com.example.sakilla.entities.Film;
 import com.example.sakilla.repos.FilmRepos;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
+
     private final FilmRepos filmRepos;
 
     @Autowired
@@ -24,9 +24,7 @@ public class FilmService {
     }
 
     public List<PartialFilmResponse> listFilms(Optional<String> title) {
-        List<Film> films = title.map(filmRepos::findByTitleContainingIgnoreCase)
-                .orElseGet(filmRepos::findAll);
-
+        List<Film> films = title.map(filmRepos::findByTitleContainingIgnoreCase).orElseGet(filmRepos::findAll);
         return films.stream()
                 .map(PartialFilmResponse::from)
                 .collect(Collectors.toList());
@@ -34,7 +32,7 @@ public class FilmService {
 
     public PartialFilmResponse getFilmById(Short id) {
         Film film = filmRepos.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Film not found with ID: " + id));
+                .orElseThrow(() -> new RuntimeException("Film not found with id " + id));
         return PartialFilmResponse.from(film);
     }
 
@@ -88,5 +86,6 @@ public class FilmService {
         filmRepos.deleteById(id);
     }
 }
+
 
 
