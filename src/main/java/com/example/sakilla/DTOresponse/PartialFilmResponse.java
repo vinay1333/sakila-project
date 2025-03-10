@@ -14,10 +14,12 @@ public class PartialFilmResponse {
     private final int releaseYear;  // Add releaseYear field
     private final int languageId;
     private final String rating;// Add languageId field
+    private final Short categoryId;
 
     // Static method to convert a Film entity to PartialFilmResponse DTO
     public static PartialFilmResponse from(Film film) {
         String rating = film.getRatingEnum() != null ? film.getRatingEnum().toString().replace("_", "-") : null;
+        Short categoryId = film.getCategoryId();
         return new PartialFilmResponse(
                 film.getId(),
                 film.getTitle(),
@@ -25,7 +27,8 @@ public class PartialFilmResponse {
                 film.getLength(),
                 film.getReleaseYear(),   // Map releaseYear from Film entity
                 film.getLanguageId(),
-                rating
+                rating,
+                categoryId
         );
     }
 }

@@ -24,16 +24,24 @@ public class FilmService {
     }
 
     public List<PartialFilmResponse> listFilms(Optional<String> title) {
-        List<Film> films = title.map(filmRepos::findByTitleContainingIgnoreCase).orElseGet(filmRepos::findAll);
+        List<Film> films = title.map(filmRepos::findByTitleContainingIgnoreCase)
+                .orElseGet(filmRepos::findAll);
         return films.stream()
                 .map(PartialFilmResponse::from)
                 .collect(Collectors.toList());
     }
 
     public PartialFilmResponse getFilmById(Short id) {
-        Film film = filmRepos.findById(id)
+        Film film = filmRepos.findByIdWithCategories(id)
                 .orElseThrow(() -> new RuntimeException("Film not found with id " + id));
         return PartialFilmResponse.from(film);
+    }
+
+    public List<PartialFilmResponse> filterFilms(Short categoryId, Integer duration, String rating, Integer releaseYear, Integer languageId) {
+        List<Film> films = filmRepos.findFilmsByFilters(categoryId, duration, rating, releaseYear, languageId);
+        return films.stream()
+                .map(PartialFilmResponse::from)
+                .collect(Collectors.toList());
     }
 
     public PartialFilmResponse createFilm(FilmRequest filmRequest) {

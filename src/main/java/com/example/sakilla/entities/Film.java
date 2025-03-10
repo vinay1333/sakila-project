@@ -38,6 +38,7 @@ public class Film {
     @Column(name = "rating")
     private String rating;
 
+
     // Convert the rating string (from the database) to the Rating enum
     public Rating getRatingEnum() {
         return rating != null ? Rating.valueOf(rating.replace("-", "_")) : null;
@@ -50,5 +51,19 @@ public class Film {
 
     @ManyToMany(mappedBy = "films")
     private List<Actor> actors = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "film_category",
+            joinColumns = @JoinColumn(name = "film_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> categories;
+
+    public Short getCategoryId() {
+        return categories != null && !categories.isEmpty() ? categories.get(0).getId() : null;
+    }
+
+
 
 }

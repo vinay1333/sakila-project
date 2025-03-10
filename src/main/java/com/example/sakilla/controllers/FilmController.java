@@ -36,6 +36,17 @@ public class FilmController {
         return filmService.getFilmById(id);
     }
 
+    @GetMapping("/films/filter")
+    public List<PartialFilmResponse> filterFilms(
+            @RequestParam(required = false) Short categoryId,
+            @RequestParam(required = false) Integer duration,
+            @RequestParam(required = false) String rating,
+            @RequestParam(required = false) Integer releaseYear,
+            @RequestParam(required = false) Integer languageId) {
+        return filmService.filterFilms(categoryId, duration, rating, releaseYear, languageId);
+    }
+
+
 
     // POST create film
     @PostMapping("/films")
