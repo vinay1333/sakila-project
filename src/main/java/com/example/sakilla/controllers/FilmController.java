@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173") // Allow only requests from this origin
+@CrossOrigin
 public class FilmController {
 
     private final FilmService filmService;
