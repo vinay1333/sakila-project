@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface ActorRepos extends JpaRepository<Actor, Short> {
     List<Actor> findByFullNameContainingIgnoreCase(String fullName);
+
 }
 
 

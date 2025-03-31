@@ -1,7 +1,9 @@
 package com.example.sakilla.services;
 
+import com.example.sakilla.DTOresponse.ActorResponse;
 import com.example.sakilla.DTOresponse.FilmRequest;
 import com.example.sakilla.DTOresponse.PartialFilmResponse;
+import com.example.sakilla.entities.Actor;
 import com.example.sakilla.entities.Film;
 import com.example.sakilla.repos.FilmRepos;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,20 @@ public class FilmService {
         return PartialFilmResponse.from(film);
     }
 
+    public List<ActorResponse> getActorsForFilm(Short filmId) {
+        // Find the film by ID
+        Film film = filmRepos.findById(filmId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Film not found"));
+
+        // Get the actors associated with the film
+        List<Actor> actors = film.getActors();
+
+        // Convert to ActorResponse DTO and return
+        return actors.stream()
+                .map(ActorResponse::from)
+                .collect(Collectors.toList());
+    }
+
     public List<PartialFilmResponse> filterFilms(Short categoryId, Integer duration, String rating, Integer releaseYear, Integer languageId) {
         List<Film> films = filmRepos.findFilmsByFilters(categoryId, duration, rating, releaseYear, languageId);
         return films.stream()
@@ -56,6 +72,7 @@ public class FilmService {
         return PartialFilmResponse.from(createdFilm);
     }
 
+    //PUT
     public PartialFilmResponse updateFilm(Short id, FilmRequest filmRequest) {
         Film film = filmRepos.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Film not found with ID: " + id));
@@ -68,6 +85,7 @@ public class FilmService {
         return PartialFilmResponse.from(updatedFilm);
     }
 
+    //PATCH
     public PartialFilmResponse partiallyUpdateFilm(Short id, FilmRequest filmRequest) {
         Film film = filmRepos.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Film not found with ID: " + id));

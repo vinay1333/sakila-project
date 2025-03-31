@@ -44,7 +44,7 @@ public class ActorController {
         return actorService.updateActor(id, data.getFirstName(), data.getLastName());
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/actors/{id}")
     public ActorResponse patchActor(@PathVariable("id") short id, @RequestBody ActorRequest request) {
         // Validate that at least one field is provided
         if (request.getFirstName() == null && request.getLastName() == null) {

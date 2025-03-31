@@ -17,11 +17,6 @@ public class SakillaRestApiApplication {
 		String dbUser = dotenv.get("DB_USER");
 		String dbPassword = dotenv.get("DB_PASSWORD");
 
-		// Optionally, print to check the values (remove this in production)
-		System.out.println("DB Host: " + dbHost);
-		System.out.println("DB Port: " + dbPort);
-		System.out.println("DB Name: " + dbName);
-
 		// Proceed to run the Spring Boot app
 		SpringApplication.run(SakillaRestApiApplication.class, args);
 	}

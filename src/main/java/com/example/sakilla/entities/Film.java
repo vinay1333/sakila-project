@@ -49,8 +49,6 @@ public class Film {
         this.rating = ratingEnum != null ? ratingEnum.name().replace("_", "-") : null;
     }
 
-    @ManyToMany(mappedBy = "films")
-    private List<Actor> actors = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -64,6 +62,12 @@ public class Film {
         return categories != null && !categories.isEmpty() ? categories.get(0).getId() : null;
     }
 
-
+    @ManyToMany
+    @JoinTable(
+            name = "film_actor",
+            joinColumns = @JoinColumn(name = "film_id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id")
+    )
+    private List<Actor> actors = new ArrayList<>();
 
 }

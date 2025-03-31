@@ -1,5 +1,6 @@
 package com.example.sakilla.controllers;
 
+import com.example.sakilla.DTOresponse.ActorResponse;
 import com.example.sakilla.DTOresponse.FilmRequest;
 import com.example.sakilla.DTOresponse.PartialFilmResponse;
 import com.example.sakilla.entities.Film;
@@ -46,6 +47,10 @@ public class FilmController {
         return filmService.filterFilms(categoryId, duration, rating, releaseYear, languageId);
     }
 
+    @GetMapping("/films/{id}/actors")
+    public List<ActorResponse> getActorsForFilm(@PathVariable Short id) {
+        return filmService.getActorsForFilm(id);
+    }
 
 
     // POST create film
