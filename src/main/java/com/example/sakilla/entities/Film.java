@@ -1,6 +1,7 @@
 package com.example.sakilla.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.util.List;
 @Table(name = "film")
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class Film {
 

@@ -51,31 +51,5 @@ public class FilmController {
     public List<ActorResponse> getActorsForFilm(@PathVariable Short id) {
         return filmService.getActorsForFilm(id);
     }
-
-
-    // POST create film
-    @PostMapping("/films")
-    public PartialFilmResponse createFilm(@RequestBody @Valid FilmRequest data) {
-        return filmService.createFilm(data);
-    }
-
-    // PUT update film
-    @PutMapping("/films/{id}")
-    public PartialFilmResponse updateFilm(@PathVariable Short id, @RequestBody @Valid FilmRequest data) {
-        return filmService.updateFilm(id, data);
-    }
-
-    // PATCH partial update film
-    @PatchMapping("/films/{id}")
-    public PartialFilmResponse partiallyUpdateFilm(@PathVariable Short id, @RequestBody FilmRequest data) {
-        return filmService.partiallyUpdateFilm(id, data);
-    }
-
-    // DELETE film
-    @DeleteMapping("/films/{id}")
-    public void deleteFilm(@PathVariable Short id) {
-        filmService.deleteFilm(id);
-    }
-
 }
 

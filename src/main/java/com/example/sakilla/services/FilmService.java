@@ -60,57 +60,6 @@ public class FilmService {
                 .collect(Collectors.toList());
     }
 
-    public PartialFilmResponse createFilm(FilmRequest filmRequest) {
-        Film film = new Film();
-        film.setTitle(filmRequest.getTitle());
-        film.setDescription(filmRequest.getDescription());
-        film.setLength(filmRequest.getLength());
-        // Assume a default value for languageId or modify based on logic
-        film.setLanguageId(1);
-
-        Film createdFilm = filmRepos.save(film);
-        return PartialFilmResponse.from(createdFilm);
-    }
-
-    //PUT
-    public PartialFilmResponse updateFilm(Short id, FilmRequest filmRequest) {
-        Film film = filmRepos.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Film not found with ID: " + id));
-
-        film.setTitle(filmRequest.getTitle());
-        film.setDescription(filmRequest.getDescription());
-        film.setLength(filmRequest.getLength());
-
-        Film updatedFilm = filmRepos.save(film);
-        return PartialFilmResponse.from(updatedFilm);
-    }
-
-    //PATCH
-    public PartialFilmResponse partiallyUpdateFilm(Short id, FilmRequest filmRequest) {
-        Film film = filmRepos.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Film not found with ID: " + id));
-
-        // Only update fields that are not null
-        if (filmRequest.getTitle() != null) {
-            film.setTitle(filmRequest.getTitle());
-        }
-        if (filmRequest.getDescription() != null) {
-            film.setDescription(filmRequest.getDescription());
-        }
-        if (filmRequest.getLength() != null) {
-            film.setLength(filmRequest.getLength());
-        }
-
-        Film updatedFilm = filmRepos.save(film);
-        return PartialFilmResponse.from(updatedFilm);
-    }
-
-    public void deleteFilm(Short id) {
-        if (!filmRepos.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Film not found with ID: " + id);
-        }
-        filmRepos.deleteById(id);
-    }
 }
 
 
