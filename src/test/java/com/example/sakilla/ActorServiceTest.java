@@ -105,6 +105,33 @@ public class ActorServiceTest {
     }
 
     @Test
+    public void patchActorUpdatesActorSuccessfully() {
+        // Arrange
+        Actor existingActor = new Actor((short) 1, "John", "Doe", "John Doe", List.of());
+        when(actorRepos.findById((short) 1)).thenReturn(Optional.of(existingActor)); // Mock finding actor
+        when(actorRepos.save(any(Actor.class))).thenReturn(existingActor); // Mock saving the actor
+
+        // Act
+        ActorResponse response = actorService.patchActor((short) 1, "Updated", null);
+
+        // Assert
+        assertEquals("Updated", response.getFirstName());
+        assertEquals("Doe", response.getLastName()); // Last name should remain unchanged
+    }
+
+    @Test
+    public void patchActorThrowsExceptionForInvalidId() {
+        // Arrange
+        when(actorRepos.findById((short) 99)).thenReturn(Optional.empty()); // Mock actor not found
+
+        // Act & Assert
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            actorService.patchActor((short) 99, "Updated", "Name");
+        });
+        assertEquals("Actor not found", exception.getMessage());
+    }
+
+    @Test
     public void deleteActorDeletesActorForValidId() {
         // Arrange
         Actor actor = new Actor((short) 1, "John", "Doe", "John Doe", List.of());
